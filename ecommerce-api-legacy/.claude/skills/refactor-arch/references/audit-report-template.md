@@ -1,12 +1,12 @@
 # Template do Relatório de Auditoria (Fase 2)
 
-O relatório é impresso no terminal em Markdown, exatamente nesta estrutura. Ele deve poder ser copiado como está para `reports/audit-project-N.md`.
+O relatório é impresso no terminal em Markdown puro (sem bloco de código em volta), exatamente nesta estrutura. Ele deve poder ser copiado como está para `reports/audit-project-N.md`. O bloco abaixo só delimita o template neste arquivo.
 
 ## Regras
 
 1. Findings ordenados por severidade: todos os CRITICAL, depois HIGH, MEDIUM e LOW. Dentro da mesma severidade, ordene pelo ID do catálogo.
 2. Numere os findings em sequência (`#1`, `#2`...).
-3. `File:` sempre com caminho relativo à raiz do projeto e linhas exatas: `arquivo:linha`, `arquivo:inicio-fim` ou lista `arquivo:12, 48-50, 92`.
+3. `File:` sempre com caminho relativo à raiz do projeto e linhas exatas: `arquivo:linha`, `arquivo:inicio-fim` ou lista `arquivo:12, 48-50, 92`. Quando o anti-pattern aparece em vários arquivos, separe-os com `;` no mesmo finding.
 4. `Evidence:` mostra um trecho curto e real do código (1 a 3 linhas), sem reescrever.
 5. Cada finding referencia o ID do catálogo (`AP-xx`).
 6. O `Summary` precisa bater com a quantidade de findings listados.

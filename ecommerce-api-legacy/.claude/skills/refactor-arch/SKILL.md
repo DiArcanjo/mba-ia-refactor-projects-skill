@@ -58,10 +58,10 @@ Siga direto para a Fase 2, sem pedir confirmação.
 
 1. Leia `references/anti-patterns-catalog.md` e `references/audit-report-template.md`.
 2. Percorra **cada arquivo** cruzando o código com **cada item do catálogo**. Para cada ocorrência registre: ID do catálogo, severidade, arquivo, linha(s) exata(s), evidência (trecho curto do código), impacto e recomendação.
-3. Agrupe ocorrências do mesmo anti-pattern no mesmo arquivo em um único finding, listando todas as linhas (ex.: `models.py:28, 48-50, 58-60`). Se o mesmo anti-pattern aparecer em arquivos diferentes, crie um finding por arquivo.
+3. Gere **um finding por anti-pattern do catálogo**. Se ele aparece em vários arquivos, liste todos no campo `File:` separados por `;` com as linhas de cada um (ex.: `models.py:28, 48-50; app.py:61`). Só divida em findings separados quando a severidade ou o impacto forem realmente diferentes (ex.: segredo no código vs. segredo devolvido na resposta). O relatório deve ficar entre 10 e 25 findings na maioria dos projetos.
 4. Verifique obrigatoriamente o uso de **APIs deprecated** (item do catálogo) considerando a versão das dependências do manifesto.
 5. Ordene os findings por severidade: CRITICAL → HIGH → MEDIUM → LOW.
-6. Imprima o relatório completo seguindo **exatamente** o template.
+6. Imprima o relatório completo seguindo **exatamente** o template, como Markdown puro (não envolva o relatório em bloco de código).
 7. Termine a fase com a pergunta abaixo e **PARE**. Não leia mais nada, não crie nem edite arquivos e não execute comandos que modifiquem o projeto até receber a resposta:
 
 ```
@@ -96,6 +96,8 @@ Leia `references/mvc-guidelines.md` e `references/refactoring-playbook.md` antes
 
 1. Aplique as transformações por ordem de severidade (CRITICAL primeiro).
 2. Preserve o contrato da API: mesmas rotas, métodos, status HTTP e formato JSON. As únicas mudanças de contrato permitidas são correções de segurança (ex.: não devolver senha ou segredo na resposta, exigir autenticação em rota administrativa, remover endpoint que executa SQL/código arbitrário). Toda mudança de contrato precisa ser listada no resumo final.
+   - Exija autenticação **apenas** em rotas administrativas ou de manutenção (prefixo `/admin`, reset de banco, execução de query, relatórios financeiros administrativos). Não adicione autenticação a rotas de CRUD que eram públicas: isso quebraria todos os clientes atuais. Nesses casos, mantenha a rota aberta e deixe a recomendação registrada no relatório.
+   - Se o projeto emite um token falso no login, troque por um token assinado mantendo o mesmo campo na resposta.
 3. Credenciais e configurações vão para o módulo de config, lidas de variáveis de ambiente. Crie um `.env.example` com as chaves necessárias (sem valores reais). A aplicação deve subir sem `.env`, usando defaults seguros para desenvolvimento.
 4. Remova arquivos antigos que tiveram o conteúdo migrado. Não deixe código morto nem imports não usados.
 5. Estilo do código gerado:
